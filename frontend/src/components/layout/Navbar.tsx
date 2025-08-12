@@ -185,7 +185,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
               )}
               <button
                 onClick={() => {
-                  disconnectWallet();
+                  signOut();
                   setIsMenuOpen(false);
                 }}
                 className="mobile-disconnect"

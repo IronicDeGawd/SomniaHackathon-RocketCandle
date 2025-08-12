@@ -264,7 +264,7 @@ export default function GamePage() {
       console.error("Failed to submit score:", error);
       setBlockchainStatus({ 
         status: 'error', 
-        message: error?.message?.includes('rejected') 
+        message: (error as any)?.message?.includes('rejected') 
           ? 'Transaction was rejected by user' 
           : 'Failed to submit to blockchain. Please try again.' 
       });
