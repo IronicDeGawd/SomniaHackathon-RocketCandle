@@ -21,8 +21,20 @@ export class EndGameScene extends Phaser.Scene {
     // Set background
     this.cameras.main.setBackgroundColor("#1a1a2e");
 
+    // Initialize sounds
+    this.sounds = {
+      menu: this.sound.add("menu-sound", { volume: 0.3, loop: true }),
+    };
+
     // Create animated starry background
     this.createStarryBackground();
+    
+    // Start background music for end game menu (delay to ensure no overlap)
+    this.time.delayedCall(100, () => {
+      if (this.sounds.menu && !this.sounds.menu.isPlaying) {
+        this.sounds.menu.play();
+      }
+    });
 
     // Notify parent about game completion for blockchain submission
     this.notifyGameCompletion();
@@ -621,6 +633,10 @@ export class EndGameScene extends Phaser.Scene {
    */
   restartGame() {
     //console.log("🔄 Restarting game...");
+    
+    // Stop all sounds before transitioning
+    this.sound.stopAll();
+    
     this.scene.start("GameScene");
   }
 
@@ -629,6 +645,10 @@ export class EndGameScene extends Phaser.Scene {
    */
   goToMenu() {
     //console.log("📋 Returning to main menu...");
+    
+    // Stop all sounds before transitioning
+    this.sound.stopAll();
+    
     this.scene.start("MenuScene");
   }
 

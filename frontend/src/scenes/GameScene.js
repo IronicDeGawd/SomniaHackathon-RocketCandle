@@ -84,6 +84,14 @@ export class GameScene extends Phaser.Scene {
     // Set world gravity for proper physics
     this.physics.world.gravity.y = this.gravity;
 
+    // Initialize sounds
+    this.sounds = {
+      enemyDestroy: this.sound.add("enemy-destroy", { volume: 0.5 }),
+      levelComplete: this.sound.add("level-complete", { volume: 0.6 }),
+      gameOver: this.sound.add("game-over", { volume: 0.7 }),
+      gameLevel: this.sound.add("level-complete", { volume: 0.3, loop: true }),
+    };
+
     // Set camera bounds
     this.cameras.main.setBounds(0, 0, 1200, 600);
 
@@ -113,6 +121,19 @@ export class GameScene extends Phaser.Scene {
 
     // Generate candlestick barriers for current level
     this.generateCandlestickBarriers();
+    
+    // Start background music for game level (delay to ensure no overlap)
+    // Check if game music is already playing globally to prevent multiple instances
+    this.time.delayedCall(100, () => {
+      const globalSounds = this.sound.sounds;
+      const isGameMusicPlaying = globalSounds.some(sound => 
+        sound.key === "level-complete" && sound.isPlaying
+      );
+      
+      if (!isGameMusicPlaying && this.sounds.gameLevel) {
+        this.sounds.gameLevel.play();
+      }
+    });
 
     // Create trajectory prediction system
     this.createTrajectorySystem();
@@ -1411,6 +1432,11 @@ export class GameScene extends Phaser.Scene {
    * Destroy enemy and update score
    */
   destroyEnemy(enemy) {
+    // Play enemy destroy sound
+    if (this.sounds.enemyDestroy) {
+      this.sounds.enemyDestroy.play();
+    }
+
     // Create enemy death effect
     const deathEffect = this.add.circle(enemy.x, enemy.y, 15, 0x8000ff, 0.6);
 
@@ -1455,6 +1481,11 @@ export class GameScene extends Phaser.Scene {
    * Handle level completion
    */
   completeLevel() {
+    // Play level complete sound
+    if (this.sounds.levelComplete) {
+      this.sounds.levelComplete.play();
+    }
+
     // Double-check enemy count from actual enemies still in the scene
     const actualEnemiesRemaining = this.enemies.children.entries.length;
 
@@ -1532,6 +1563,8 @@ export class GameScene extends Phaser.Scene {
 
     // Show level transition message
     this.showLevelTransition();
+    
+    // Continue background music (already playing)
   }
 
   /**
@@ -1593,6 +1626,11 @@ export class GameScene extends Phaser.Scene {
   levelFailed() {
     // Check if this is the final level (level 7, index 6)
     if (this.currentLevel >= this.maxLevels - 1) {
+      // Play game over sound
+      if (this.sounds.gameOver) {
+        this.sounds.gameOver.play();
+      }
+
       // Final level failed - end the game
       this.gameOver = true;
       this.canLaunch = false;
@@ -1600,6 +1638,9 @@ export class GameScene extends Phaser.Scene {
       // Submit final score to blockchain before ending
       this.submitFinalScoreToBlockchain("game-failed");
 
+      // Stop all sounds before transitioning
+      this.sound.stopAll();
+      
       // Transition to EndGameScene with failure data
       this.scene.start("EndGameScene", {
         score: this.score,
@@ -1626,9 +1667,17 @@ export class GameScene extends Phaser.Scene {
     this.gameOver = true;
     this.canLaunch = false;
 
+    // Play game over sound for victory
+    if (this.sounds.gameOver) {
+      this.sounds.gameOver.play();
+    }
+
     // Submit final score to blockchain before ending
     this.submitFinalScoreToBlockchain("game-complete");
 
+    // Stop all sounds before transitioning
+    this.sound.stopAll();
+    
     // Transition to EndGameScene with victory data
     this.scene.start("EndGameScene", {
       score: this.score,
@@ -2081,6 +2130,11 @@ export class GameScene extends Phaser.Scene {
   endGameManually() {
     console.log("🔚 Player manually ended the game");
 
+    // Play game over sound
+    if (this.sounds.gameOver) {
+      this.sounds.gameOver.play();
+    }
+
     // Set game over state
     this.gameOver = true;
     this.canLaunch = false;
@@ -2088,6 +2142,9 @@ export class GameScene extends Phaser.Scene {
     // Submit final score to blockchain before ending
     this.submitFinalScoreToBlockchain("game-ended-manually");
 
+    // Stop all sounds before transitioning
+    this.sound.stopAll();
+    
     // Transition to EndGameScene with manual end data
     this.scene.start("EndGameScene", {
       score: this.score,

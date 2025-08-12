@@ -13,8 +13,20 @@ export class MenuScene extends Phaser.Scene {
     // Set background
     this.cameras.main.setBackgroundColor("#1a1a2e");
 
+    // Initialize sounds
+    this.sounds = {
+      menu: this.sound.add("menu-sound", { volume: 0.3, loop: true }),
+    };
+
     // Create animated starry background
     this.createStarryBackground();
+    
+    // Start background music for menu (delay to ensure no overlap)
+    this.time.delayedCall(100, () => {
+      if (this.sounds.menu && !this.sounds.menu.isPlaying) {
+        this.sounds.menu.play();
+      }
+    });
 
     // Create title
     this.add
@@ -87,6 +99,10 @@ export class MenuScene extends Phaser.Scene {
    */
   startGame() {
     //console.log("🚀 Starting new game...");
+    
+    // Stop all sounds before transitioning
+    this.sound.stopAll();
+    
     this.scene.start("GameScene");
   }
 

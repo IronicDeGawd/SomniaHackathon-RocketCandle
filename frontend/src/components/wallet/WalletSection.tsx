@@ -8,7 +8,11 @@ interface WalletSectionProps {
   onHowToPlay?: () => void;
 }
 
-const WalletSection = ({ onDashboard, onStartGame, onHowToPlay }: WalletSectionProps) => {
+const WalletSection = ({
+  onDashboard,
+  onStartGame,
+  onHowToPlay,
+}: WalletSectionProps) => {
   const { connectWallet, isLoading, isAuthenticated, user, playerStats } =
     useApp();
 
@@ -43,22 +47,23 @@ const WalletSection = ({ onDashboard, onStartGame, onHowToPlay }: WalletSectionP
     <div className="wallet-section mt-8">
       <div className="text-center">
         <div className="auth-text mb-6">
-          <div className="auth-title text-2xl font-bold mb-2">✅ Wallet Connected</div>
-          <div className="auth-subtitle text-lg text-gray-400">{user?.displayName}</div>
+          <div className="auth-title text-2xl font-bold mb-2">
+            ✅ Wallet Connected
+          </div>
+          <div className="auth-subtitle text-lg text-gray-400">
+            {user?.displayName}
+          </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-row gap-4">
           <button
             onClick={onStartGame}
             className="btn btn-success btn-large play-button"
           >
             🎮 Start Game
           </button>
-          
-          <button
-            onClick={onHowToPlay}
-            className="btn btn-glass btn-large"
-          >
+
+          <button onClick={onHowToPlay} className="btn btn-glass btn-large">
             📖 How to Play
           </button>
         </div>

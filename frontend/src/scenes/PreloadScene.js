@@ -142,6 +142,12 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image("enemy-var3", "assets/enemies/var3.png");
     this.load.image("enemy-var4", "assets/enemies/var4.png");
 
+    // Load sound effects
+    this.load.audio("menu-sound", "game-menu.wav");
+    this.load.audio("enemy-destroy", "enemy-destroy.mp3");
+    this.load.audio("level-complete", "game-level.mp3");
+    this.load.audio("game-over", "game-over.mp3");
+
     // Generate only fallback assets that we still need (blocks, particles, etc.)
     AssetGenerator.generateAssets(this);
 

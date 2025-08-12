@@ -14,14 +14,23 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://market-buster-somnia.vercel.app/"),
+  metadataBase: new URL("https://rocket-candle.vercel.app/"),
   title: "Rocket Candle - Farcaster Mini App",
   description:
     "Launch rockets through candlestick barriers, destroy enemies, and earn RocketFUEL tokens in this physics-based puzzle game",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/logo.png",
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" }
+    ],
+    apple: "/apple-touch-icon.png",
+    other: [
+      { rel: "android-chrome", url: "/android-chrome-192x192.png", sizes: "192x192" },
+      { rel: "android-chrome", url: "/android-chrome-512x512.png", sizes: "512x512" }
+    ]
   },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "Rocket Candle - Farcaster Mini App",
     description:
@@ -53,9 +62,13 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Rocket Candle" />
+        <meta name="application-name" content="Rocket Candle" />
+        <meta name="msapplication-TileColor" content="#1a1a2e" />
+        <meta name="theme-color" content="#1a1a2e" />
         <meta
           name="fc:miniapp"
-          content='{"version":"1","name":"Rocket Candle","iconUrl":"https://market-buster-somnia.vercel.app/logo.png","homeUrl":"https://market-buster-somnia.vercel.app","imageUrl":"https://market-buster-somnia.vercel.app/logo.png","button":{"text":"🚀 Play Now","action":"play"}}'
+          content='{"version":"1","name":"Rocket Candle","iconUrl":"https://rocket-candle.vercel.app/logo.png","homeUrl":"https://rocket-candle.vercel.app","imageUrl":"https://rocket-candle.vercel.app/logo.png","button":{"text":"🚀 Play Now","action":"play"}}'
         />
       </head>
       <body className={`${orbitron.variable} font-orbitron`}>

@@ -747,7 +747,6 @@ body::after {
   cursor: pointer;
   transition: all var(--transition-base);
   box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
-  margin-bottom: var(--space-xl);
   position: relative;
   overflow: hidden;
 }
@@ -1682,9 +1681,7 @@ body::after {
   margin-top: var(--space-xl);
 }
 
-.dashboard-games-section .dashboard-card {
-  height: fit-content;
-}
+
 
 /* ===== LOADING & STATE COMPONENTS ===== */
 .loading-state {
@@ -2778,28 +2775,28 @@ button:focus-visible,
   .navbar-nav {
     display: none;
   }
-  
+
   .mobile-menu-toggle {
     display: block;
   }
-  
+
   .mobile-menu {
     display: block;
   }
-  
+
   .navbar-container {
     padding: var(--space-md) var(--space-lg);
     height: 70px;
   }
-  
+
   .wallet-button {
     padding: var(--space-sm);
   }
-  
+
   .wallet-details {
     display: none;
   }
-  
+
   .dropdown-arrow {
     display: none;
   }
@@ -2810,11 +2807,11 @@ button:focus-visible,
     padding: var(--space-md) var(--space-md);
     height: 60px;
   }
-  
+
   .navbar-title {
     display: none;
   }
-  
+
   .wallet-dropdown {
     min-width: 250px;
     right: -50px;
@@ -2826,12 +2823,12 @@ button:focus-visible,
     padding: var(--space-sm) var(--space-sm);
     height: 56px;
   }
-  
+
   .wallet-dropdown {
     min-width: 200px;
     right: -80px;
   }
-  
+
   .mobile-menu {
     padding: var(--space-md);
   }
@@ -2843,44 +2840,44 @@ button:focus-visible,
   .navbar {
     display: none;
   }
-  
+
   /* Adjust padding when navbar is hidden */
   .pt-20 {
     padding-top: 0.5rem !important;
   }
-  
+
   /* Make game container full height */
   .min-h-screen {
     min-height: 100vh;
     height: 100vh;
   }
-  
+
   /* Optimize game stats for landscape */
   .game-stats-section {
     padding: var(--space-md) var(--space-sm);
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-sm);
   }
-  
+
   /* Compact header for landscape */
   .game-header {
     padding: var(--space-sm);
   }
-  
+
   .game-header-content {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .game-header-stats {
     flex-direction: row;
     gap: var(--space-sm);
   }
-  
+
   /* Optimize leaderboard for landscape */
   .dashboard-games-section {
     grid-template-columns: 1fr 1fr;
@@ -2893,24 +2890,24 @@ button:focus-visible,
   body {
     font-size: 14px;
   }
-  
+
   .game-title {
     font-size: 1.5rem;
   }
-  
+
   .game-subtitle {
     font-size: 0.875rem;
   }
-  
+
   /* Smaller stat cards */
   .stat-card {
     padding: var(--space-xs) var(--space-sm);
   }
-  
+
   .stat-value {
     font-size: 1rem;
   }
-  
+
   .stat-label {
     font-size: 0.75rem;
   }
