@@ -56,7 +56,7 @@ export default function PhaserGame({ onGameComplete }: PhaserGameProps) {
 
     // Set up global wallet state for game scenes
     if (typeof window !== 'undefined') {
-      window.marketBusterWallet = {
+      window.rocketCandleGame = {
         isConnected: isAuthenticated,
         address: walletAddress,
         onGameComplete: onGameComplete || (() => {}),
@@ -70,16 +70,16 @@ export default function PhaserGame({ onGameComplete }: PhaserGameProps) {
         gameRef.current = null;
       }
       if (typeof window !== 'undefined') {
-        delete window.marketBusterWallet;
+        delete window.rocketCandleGame;
       }
     };
   }, [isAuthenticated, walletAddress, onGameComplete]);
 
   // Update global wallet state when authentication changes
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.marketBusterWallet) {
-      window.marketBusterWallet.isConnected = isAuthenticated;
-      window.marketBusterWallet.address = walletAddress;
+    if (typeof window !== 'undefined' && window.rocketCandleGame) {
+      window.rocketCandleGame.isConnected = isAuthenticated;
+      window.rocketCandleGame.address = walletAddress;
     }
   }, [isAuthenticated, walletAddress]);
 
@@ -129,7 +129,7 @@ export default function PhaserGame({ onGameComplete }: PhaserGameProps) {
 // Extend Window interface for TypeScript
 declare global {
   interface Window {
-    marketBusterWallet?: {
+    rocketCandleGame?: {
       isConnected: boolean;
       address: string | null;
       onGameComplete: (score: number, level: number) => void;

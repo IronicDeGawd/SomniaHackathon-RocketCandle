@@ -4,9 +4,10 @@ import WalletSection from "../wallet/WalletSection";
 interface HeroSectionProps {
   onDashboard?: () => void;
   onStartGame?: () => void;
+  onHowToPlay?: () => void;
 }
 
-const HeroSection = ({ onDashboard, onStartGame }: HeroSectionProps) => {
+const HeroSection = ({ onDashboard, onStartGame, onHowToPlay }: HeroSectionProps) => {
   const scrollToHowToPlay = () => {
     const howToPlaySection = document.querySelector(".how-to-play-section");
     if (howToPlaySection) {
@@ -29,14 +30,12 @@ const HeroSection = ({ onDashboard, onStartGame }: HeroSectionProps) => {
         Web3 gaming experience.
       </p>
 
-      <button
-        className="scroll-down-button"
-        onClick={scrollToHowToPlay}
-        aria-label="Scroll to How to Play section"
-      />
-
       {/* Wallet Connection Section */}
-      <WalletSection onDashboard={onDashboard} onStartGame={onStartGame} />
+      <WalletSection 
+        onDashboard={onDashboard} 
+        onStartGame={onStartGame}
+        onHowToPlay={onHowToPlay || scrollToHowToPlay}
+      />
     </section>
   );
 };

@@ -18,7 +18,7 @@ export class MenuScene extends Phaser.Scene {
 
     // Create title
     this.add
-      .text(600, 150, "🚀 MARKET BUSTER", {
+      .text(600, 150, "🚀 ROCKET CANDLE", {
         fontSize: "72px",
         fill: "#ffffff",
         fontStyle: "bold",

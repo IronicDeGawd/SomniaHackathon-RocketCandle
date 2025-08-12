@@ -345,42 +345,6 @@ export default function GamePage() {
         <div className="relative">
           <PhaserGame onGameComplete={handleGameComplete} />
           
-          {/* Score Submission Overlay */}
-          {(isSubmittingScore || isPending || isConfirming) && (
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm rounded-lg flex items-center justify-center">
-              <div className="bg-blue-900/80 border border-blue-500 rounded-lg p-6 text-center max-w-sm">
-                <div className="animate-spin w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <h3 className="text-lg font-bold mb-2">📤 Blockchain Submission</h3>
-                <p className="text-sm text-gray-300">
-                  {(isPending && "Confirming transaction...") ||
-                   (isConfirming && "Waiting for blockchain confirmation...") ||
-                   "Preparing transaction..."
-                  }
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Success Overlay */}
-          {isSuccess && lastGameResult && (
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm rounded-lg flex items-center justify-center">
-              <div className="bg-green-900/80 border border-green-500 rounded-lg p-6 text-center">
-                <div className="text-4xl mb-4">🎉</div>
-                <h3 className="text-lg font-bold mb-2">Score Submitted!</h3>
-                <div className="space-y-2 text-sm">
-                  <p><strong>Score:</strong> {lastGameResult.score.toLocaleString()}</p>
-                  <p><strong>Level:</strong> {lastGameResult.level}</p>
-                  <p><strong>RocketFUEL Earned:</strong> {lastGameResult.tokensEarned}</p>
-                </div>
-                <button
-                  onClick={() => setLastGameResult(null)}
-                  className="mt-4 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors"
-                >
-                  Continue Playing
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

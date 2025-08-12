@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 
-/* === MARKET BUSTER LANDING PAGE STYLES === */
+/* === ROCKET CANDLE LANDING PAGE STYLES === */
 
 /* === CSS CUSTOM PROPERTIES (DESIGN TOKENS) === */
 :root {
@@ -185,10 +185,8 @@ body {
 }
 
 .scroll-down-button {
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin: 2rem auto 0;
   background: var(--glass-bg);
   border: 2px solid var(--glass-border);
   border-radius: 50%;

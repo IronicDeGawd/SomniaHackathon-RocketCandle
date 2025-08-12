@@ -202,8 +202,8 @@ export class EndGameScene extends Phaser.Scene {
    */
   notifyGameCompletion() {
     // Use the global callback provided by the parent component
-    if (typeof window !== 'undefined' && window.marketBusterWallet) {
-      const { onGameComplete } = window.marketBusterWallet;
+    if (typeof window !== 'undefined' && window.rocketCandleGame) {
+      const { onGameComplete } = window.rocketCandleGame;
       if (onGameComplete && typeof onGameComplete === 'function') {
         console.log('🚀 Notifying blockchain of game completion...', {
           score: this.finalScore,
