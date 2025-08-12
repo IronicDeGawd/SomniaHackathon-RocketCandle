@@ -1,0 +1,19 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0ODY4OUYzNjIyOWQ3OTJGMEM5NjVGRkQ5RjQ3OThBMTAyRTA0Qzg4In0",
+    "payload": "eyJkb21haW4iOiJtYXJrZXQtYnVzdGVyLXNvbW5pYS52ZXJjZWwuYXBwIn0",
+    "signature": "MHhkNTU5YzJGNzc0Y0Y5RDNFNkZGNGY4MDcxOTYzOEE1MzQ4ODNGQzJDQ0VFMjUzRUQ5Q0IzOTAwQ0YwOUFEMzI3NzMwNDQ0MTM3NEE2ODQ5MkQ4Q0M0RUY5MzM0OUIyREM2OTQ5NEY4OTcxQ0MzNDFGQkYzRkI1QTJBNjk4MzQ4MjFj"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Rocket Candle",
+    "iconUrl": "https://market-buster-somnia.vercel.app/logo.png",
+    "homeUrl": "https://market-buster-somnia.vercel.app",
+    "imageUrl": "https://market-buster-somnia.vercel.app/preview.png",
+    "description": "Launch rockets through candlestick barriers, destroy enemies, and earn RocketFUEL tokens in this physics-based puzzle game on Somnia blockchain",
+    "button": {
+      "text": "🚀 Play Now",
+      "action": "play"
+    }
+  }
+}
