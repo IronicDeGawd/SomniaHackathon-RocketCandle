@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
       <div className="navbar-container">
         {/* Left Side - Logo and Title */}
         <div className="navbar-brand">
-          <SomniaLogo size="small" className="navbar-logo" />
+          <SomniaLogo size="small" className="navbar-logo" animate={false} />
           <div className="navbar-title">
             <span className="navbar-title-main">Rocket Candle</span>
             <span className="navbar-subtitle">Somnia Blockchain</span>

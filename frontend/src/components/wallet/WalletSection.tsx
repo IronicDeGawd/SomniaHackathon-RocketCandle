@@ -8,7 +8,8 @@ interface WalletSectionProps {
 }
 
 const WalletSection = ({ onDashboard, onStartGame }: WalletSectionProps) => {
-  const { connectWallet, isLoading, isAuthenticated, user, playerStats } = useApp();
+  const { connectWallet, isLoading, isAuthenticated, user, playerStats } =
+    useApp();
 
   if (!isAuthenticated) {
     return (
@@ -22,7 +23,7 @@ const WalletSection = ({ onDashboard, onStartGame }: WalletSectionProps) => {
           >
             {isLoading ? "Connecting..." : "🔗 Connect Wallet"}
           </button>
-          <p className="text-gray-400 mt-4">
+          <p className="text-gray-400 mt-4 p-2">
             Connect your wallet to start earning RocketFUEL tokens
           </p>
         </div>
@@ -37,30 +38,9 @@ const WalletSection = ({ onDashboard, onStartGame }: WalletSectionProps) => {
           <div className="auth-title">✅ Wallet Connected</div>
           <div className="auth-subtitle">{user?.displayName}</div>
         </div>
-        
-        {/* Player Stats */}
-        {playerStats && (
-          <div className="glass-card p-6 max-w-2xl mx-auto mb-6">
-            <h3 className="text-xl font-semibold mb-4 text-center">Your Stats</h3>
-            <div className="grid grid-cols-3 gap-6 text-center">
-              <div>
-                <div className="text-2xl font-bold text-blue-400">{playerStats.totalGames}</div>
-                <div className="text-sm text-gray-400">Games Played</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-purple-400">{playerStats.bestScore.toLocaleString()}</div>
-                <div className="text-sm text-gray-400">Best Score</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-green-400">{playerStats.totalTokens.toFixed(2)}</div>
-                <div className="text-sm text-gray-400">RocketFUEL Tokens</div>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div className="navigation-buttons">
-          <button 
+          <button
             onClick={onStartGame}
             className="btn btn-success btn-large play-button"
           >

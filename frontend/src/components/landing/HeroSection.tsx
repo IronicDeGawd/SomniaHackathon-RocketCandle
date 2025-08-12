@@ -1,6 +1,12 @@
 import SomniaLogo from "../ui/SomniaLogo";
+import WalletSection from "../wallet/WalletSection";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onDashboard?: () => void;
+  onStartGame?: () => void;
+}
+
+const HeroSection = ({ onDashboard, onStartGame }: HeroSectionProps) => {
   const scrollToHowToPlay = () => {
     const howToPlaySection = document.querySelector(".how-to-play-section");
     if (howToPlaySection) {
@@ -15,18 +21,22 @@ const HeroSection = () => {
     <section className="hero-section">
       {/* Somnia Logo */}
       <SomniaLogo size="large" className="mb-8" />
-      
+
       <h1 className="hero-title">🚀 Rocket Candle</h1>
       <p className="hero-subtitle">
         Blast through candlestick barriers and earn RocketFUEL tokens on the
         Somnia blockchain! Master physics-based gameplay in this revolutionary
         Web3 gaming experience.
       </p>
+
       <button
         className="scroll-down-button"
         onClick={scrollToHowToPlay}
         aria-label="Scroll to How to Play section"
       />
+
+      {/* Wallet Connection Section */}
+      <WalletSection onDashboard={onDashboard} onStartGame={onStartGame} />
     </section>
   );
 };

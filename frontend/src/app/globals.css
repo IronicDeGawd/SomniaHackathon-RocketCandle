@@ -288,7 +288,7 @@ body {
 /* How to Play Section */
 .how-to-play-section {
   padding: var(--space-5xl) var(--space-xl);
-  background: var(--bg-quaternary);
+  background: transparent;
 }
 
 .how-to-play-container {
@@ -529,6 +529,7 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: var(--space-xl);
   padding: var(--space-xl);
+  margin: var(--space-xl);
   margin-bottom: var(--space-2xl);
 }
 

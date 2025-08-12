@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import HeroSection from "@/components/landing/HeroSection";
-import WalletSection from "@/components/wallet/WalletSection";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import HowToPlaySection from "@/components/landing/HowToPlaySection";
 import Navbar from "@/components/layout/Navbar";
@@ -40,17 +39,11 @@ export default function LandingPage() {
       
       {/* Main content container with navbar padding */}
       <div className="landing-container pt-20">
-        {/* Hero Section */}
-        <HeroSection />
-
-        {/* CTA Section - Only show wallet connection */}
-        <section className="cta-section">
-          {/* Wallet Connection Section */}
-          <WalletSection
-            onDashboard={handleDashboard}
-            onStartGame={handleStartGame}
-          />
-        </section>
+        {/* Hero Section with integrated CTA */}
+        <HeroSection 
+          onDashboard={handleDashboard}
+          onStartGame={handleStartGame}
+        />
 
         {/* Content Section */}
         <section className="content-section">

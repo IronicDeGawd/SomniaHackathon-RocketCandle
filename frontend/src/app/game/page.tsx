@@ -299,7 +299,7 @@ export default function GamePage() {
       {/* Navigation Bar */}
       <Navbar onNavigate={handleNavigation} />
       
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4" style={{paddingTop: '100px'}}>
+      <div className="min-h-screen text-white p-4" style={{paddingTop: '100px'}}>
       {/* Notification System */}
       <NotificationSystem 
         notifications={notifications} 
@@ -384,26 +384,6 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* Game Stats */}
-      {playerStats && (
-        <div className="game-stats-section">
-          <h2 className="stats-title">Your Stats</h2>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-number">{playerStats.totalGames}</div>
-              <div className="stat-label">Games Played</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">{playerStats.bestScore.toLocaleString()}</div>
-              <div className="stat-label">Best Score</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">{playerStats.totalTokens.toFixed(2)}</div>
-              <div className="stat-label">Total RocketFUEL</div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
     </>
   );

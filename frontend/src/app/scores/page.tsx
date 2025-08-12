@@ -5,6 +5,23 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useReadContract } from "wagmi";
 import { GAME_CONTRACT_ABI, getGameContractAddress, formatAddress, type LeaderboardEntry } from "@/lib/blockchain";
+
+// Types for blockchain data
+interface RawLeaderboardEntry {
+  player: string;
+  score: bigint;
+  timestamp: bigint;
+}
+
+interface RawPlayerHistoryEntry {
+  score: bigint;
+  level: bigint;
+  gameTime: bigint;
+  timestamp: bigint;
+  player: string;
+  enemiesDestroyed: bigint;
+  rocketsUsed: bigint;
+}
 import Navbar from "@/components/layout/Navbar";
 
 export default function ScoresPage() {
@@ -75,24 +92,30 @@ export default function ScoresPage() {
 
   const formatLeaderboardData = (data: unknown[]): LeaderboardEntry[] => {
     if (!data) return [];
-    return data.map((entry: any) => ({
-      player: (entry as any).player,
-      score: Number((entry as any).score),
-      timestamp: Number((entry as any).timestamp)
-    }));
+    return data.map((entry: unknown) => {
+      const typedEntry = entry as RawLeaderboardEntry;
+      return {
+        player: typedEntry.player,
+        score: Number(typedEntry.score),
+        timestamp: Number(typedEntry.timestamp)
+      };
+    });
   };
 
   const formatPlayerHistory = (data: unknown[]) => {
     if (!data) return [];
-    return data.map((entry: unknown) => ({
-      score: Number((entry as any).score),
-      level: Number((entry as any).level),
-      gameTime: Number((entry as any).gameTime),
-      timestamp: Number((entry as any).timestamp),
-      player: (entry as any).player,
-      enemiesDestroyed: Number((entry as any).enemiesDestroyed),
-      rocketsUsed: Number((entry as any).rocketsUsed),
-    }));
+    return data.map((entry: unknown) => {
+      const typedEntry = entry as RawPlayerHistoryEntry;
+      return {
+        score: Number(typedEntry.score),
+        level: Number(typedEntry.level),
+        gameTime: Number(typedEntry.gameTime),
+        timestamp: Number(typedEntry.timestamp),
+        player: typedEntry.player,
+        enemiesDestroyed: Number(typedEntry.enemiesDestroyed),
+        rocketsUsed: Number(typedEntry.rocketsUsed),
+      };
+    });
   };
 
   const leaderboard = formatLeaderboardData(leaderboardData as unknown[]);
@@ -114,7 +137,7 @@ export default function ScoresPage() {
       {/* Navigation Bar */}
       <Navbar onNavigate={handleNavigation} />
       
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4" style={{paddingTop: '100px'}}>
+      <div className="min-h-screen text-white p-4" style={{paddingTop: '100px'}}>
       {/* Header */}
       <header className="game-header">
         <div className="game-header-content">
@@ -200,7 +223,7 @@ export default function ScoresPage() {
             
             <button
               onClick={() => refetchLeaderboard()}
-              className="btn btn-glass mt-4 w-full"
+              className="btn btn-glass mt-6 w-full"
             >
               🔄 Refresh
             </button>
@@ -268,19 +291,6 @@ export default function ScoresPage() {
           </div>
         )}
 
-        {/* Debug Info */}
-        <div className="mt-8 p-4 bg-gray-800 rounded-lg text-xs text-gray-400">
-          <details>
-            <summary className="cursor-pointer">Debug Info</summary>
-            <div className="mt-2 space-y-1">
-              <div>Contract: {contractAddress}</div>
-              <div>Current Week: {currentWeek}</div>
-              <div>Leaderboard Entries: {leaderboard.length}</div>
-              <div>Player History: {playerHistory.length}</div>
-              <div>Address: {user?.address}</div>
-            </div>
-          </details>
-        </div>
       </div>
     </div>
     </>
