@@ -53,6 +53,30 @@ export default function LandingPage() {
           {/* How to Play Section */}
           <HowToPlaySection />
         </section>
+
+        {/* Footer with Credits */}
+        <footer className="py-8 text-center text-sm text-gray-400 border-t border-gray-800/50 mt-16">
+          <p>
+            Sound Effect by{" "}
+            <a 
+              href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=38511"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              freesound_community
+            </a>{" "}
+            from{" "}
+            <a 
+              href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=38511"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              Pixabay
+            </a>
+          </p>
+        </footer>
       </div>
     </>
   );

@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Orbitron } from "next/font/google";
+import { Pixelify_Sans } from "next/font/google";
 import "./styles.css";
 import "./globals.css";
 import { Providers } from "./providers";
 import FloatingBackground from "@/components/ui/FloatingBackground";
 
-const orbitron = Orbitron({
+const pixelifySans = Pixelify_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-orbitron",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-pixelify-sans",
   display: "swap",
   preload: true,
 });
@@ -22,13 +22,21 @@ export const metadata: Metadata = {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon.ico", sizes: "any" }
+      { url: "/favicon.ico", sizes: "any" },
     ],
     apple: "/apple-touch-icon.png",
     other: [
-      { rel: "android-chrome", url: "/android-chrome-192x192.png", sizes: "192x192" },
-      { rel: "android-chrome", url: "/android-chrome-512x512.png", sizes: "512x512" }
-    ]
+      {
+        rel: "android-chrome",
+        url: "/android-chrome-192x192.png",
+        sizes: "192x192",
+      },
+      {
+        rel: "android-chrome",
+        url: "/android-chrome-512x512.png",
+        sizes: "512x512",
+      },
+    ],
   },
   manifest: "/site.webmanifest",
   openGraph: {
@@ -61,7 +69,10 @@ export default function RootLayout({
         />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
         <meta name="apple-mobile-web-app-title" content="Rocket Candle" />
         <meta name="application-name" content="Rocket Candle" />
         <meta name="msapplication-TileColor" content="#1a1a2e" />
@@ -71,7 +82,7 @@ export default function RootLayout({
           content='{"version":"1","name":"Rocket Candle","iconUrl":"https://rocket-candle.vercel.app/logo.png","homeUrl":"https://rocket-candle.vercel.app","imageUrl":"https://rocket-candle.vercel.app/logo.png","button":{"text":"🚀 Play Now","action":"play"}}'
         />
       </head>
-      <body className={`${orbitron.variable} font-orbitron`}>
+      <body className={`${pixelifySans.variable}`}>
         <FloatingBackground />
         <Providers>{children}</Providers>
       </body>
