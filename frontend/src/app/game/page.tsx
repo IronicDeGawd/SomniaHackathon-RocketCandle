@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { useWriteContract, useWaitForTransactionReceipt, useAccount, useChainId, useReadContract, useSwitchChain } from "wagmi";
 import { GAME_CONTRACT_ABI, getGameContractAddress, validateScore, calculateExpectedReward } from "@/lib/blockchain";
 import Navbar from "@/components/layout/Navbar";
+import NotificationSystem, { useNotifications } from "@/components/ui/NotificationSystem";
 
 // Dynamically import PhaserGame to avoid SSR issues
 const PhaserGame = dynamic(() => import("@/components/PhaserGame"), {
@@ -21,6 +22,17 @@ const PhaserGame = dynamic(() => import("@/components/PhaserGame"), {
 export default function GamePage() {
   const { isAuthenticated, user, playerStats, refreshPlayerStats } = useApp();
   const router = useRouter();
+  const {
+    notifications,
+    removeNotification,
+    // notifySuccess, // Currently unused
+    notifyError,
+    notifyInfo,
+    notifyTransactionSubmitted,
+    notifyTransactionConfirmed,
+    notifyScoreSubmitted,
+    notifyNetworkError
+  } = useNotifications();
   
   const handleNavigation = (page: 'home' | 'game' | 'leaderboard') => {
     switch (page) {
@@ -45,10 +57,7 @@ export default function GamePage() {
     level: number;
     tokensEarned: number;
   } | null>(null);
-  const [blockchainStatus, setBlockchainStatus] = useState<{
-    status: 'idle' | 'submitting' | 'success' | 'error';
-    message: string;
-  }>({ status: 'idle', message: '' });
+  // Remove old blockchainStatus state - using notifications instead
 
   const contractAddress = getGameContractAddress();
   
@@ -100,22 +109,16 @@ export default function GamePage() {
   useEffect(() => {
     if (writeError) {
       console.error("❌ Write contract error:", writeError);
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: `Transaction failed: ${writeError.message}` 
-      });
+      notifyError('Transaction Failed', writeError.message);
     }
-  }, [writeError]);
+  }, [writeError, notifyError]);
 
   useEffect(() => {
     if (receiptError) {
       console.error("❌ Receipt error:", receiptError);
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: `Receipt error: ${receiptError.message}` 
-      });
+      notifyError('Receipt Error', receiptError.message);
     }
-  }, [receiptError]);
+  }, [receiptError, notifyError]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -132,48 +135,33 @@ export default function GamePage() {
     
     if (!isAuthenticated || !user?.address) {
       console.warn("❌ Cannot submit score: user not authenticated");
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: 'User not authenticated' 
-      });
+      notifyError('Authentication Error', 'User not authenticated');
       return;
     }
 
     if (!isConnected || !address) {
       console.warn("❌ Cannot submit score: wallet not connected");
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: 'Wallet not connected' 
-      });
+      notifyError('Wallet Error', 'Wallet not connected');
       return;
     }
 
     if (chainId !== 50312) {
       console.warn("❌ Wrong network detected, attempting to switch to Somnia...");
       try {
-        setBlockchainStatus({ 
-          status: 'submitting', 
-          message: 'Switching to Somnia network...' 
-        });
+        notifyInfo('Network Switch', 'Switching to Somnia network...');
         await switchChain({ chainId: 50312 });
         console.log("✅ Successfully switched to Somnia network");
         // Continue with score submission after network switch
       } catch (switchError) {
         console.error("❌ Failed to switch network:", switchError);
-        setBlockchainStatus({ 
-          status: 'error', 
-          message: 'Please manually switch to Somnia network in your wallet' 
-        });
+        notifyNetworkError();
         return;
       }
     }
 
     if (!contractAddress || contractAddress === "0x0000000000000000000000000000000000000000") {
       console.error("❌ Cannot submit score: invalid contract address");
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: 'Invalid contract configuration' 
-      });
+      notifyError('Contract Error', 'Invalid contract configuration');
       return;
     }
 
@@ -195,10 +183,7 @@ export default function GamePage() {
     // Basic validation (using adjusted level)
     if (!validateScore(score, gameTime, adjustedLevel)) {
       console.error("❌ Score validation failed");
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: 'Score validation failed' 
-      });
+      notifyError('Validation Error', 'Score validation failed');
       return;
     }
 
@@ -207,7 +192,7 @@ export default function GamePage() {
     
     try {
       setIsSubmittingScore(true);
-      setBlockchainStatus({ status: 'submitting', message: 'Preparing blockchain transaction...' });
+      notifyInfo('Blockchain Submission', 'Preparing blockchain transaction...');
       
       // Mock data for enemies destroyed and rockets used (these would come from the game)
       const enemiesDestroyed = Math.min(Math.floor(score / 1000) + adjustedLevel, 50);
@@ -222,7 +207,7 @@ export default function GamePage() {
         expectedTokens
       });
 
-      setBlockchainStatus({ status: 'submitting', message: 'Confirming transaction in wallet...' });
+      notifyInfo('Wallet Confirmation', 'Confirming transaction in wallet...');
 
       console.log("📝 Calling writeContract with args:", {
         address: contractAddress,
@@ -258,16 +243,14 @@ export default function GamePage() {
         tokensEarned: expectedTokens
       });
 
-      setBlockchainStatus({ status: 'submitting', message: 'Waiting for blockchain confirmation...' });
+      notifyInfo('Blockchain Confirmation', 'Waiting for blockchain confirmation...');
 
     } catch (error) {
       console.error("Failed to submit score:", error);
-      setBlockchainStatus({ 
-        status: 'error', 
-        message: (error as any)?.message?.includes('rejected') 
-          ? 'Transaction was rejected by user' 
-          : 'Failed to submit to blockchain. Please try again.' 
-      });
+      const errorMessage = (error as Error)?.message?.includes('rejected') 
+        ? 'Transaction was rejected by user' 
+        : 'Failed to submit to blockchain. Please try again.';
+      notifyError('Submission Failed', errorMessage);
     } finally {
       setIsSubmittingScore(false);
     }
@@ -277,9 +260,9 @@ export default function GamePage() {
   useEffect(() => {
     if (hash) {
       console.log("📝 Transaction hash generated:", hash);
-      setBlockchainStatus({ status: 'submitting', message: 'Transaction submitted, waiting for confirmation...' });
+      notifyTransactionSubmitted(hash);
     }
-  }, [hash]);
+  }, [hash, notifyTransactionSubmitted]);
 
   // Track pending state
   useEffect(() => {
@@ -288,22 +271,17 @@ export default function GamePage() {
 
   // Refresh player stats after successful transaction
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && lastGameResult) {
       console.log("✅ Score submitted successfully! Hash:", hash);
-      setBlockchainStatus({ status: 'success', message: 'Score saved to blockchain successfully!' });
+      if (hash) {
+        notifyTransactionConfirmed(hash);
+      }
+      notifyScoreSubmitted(lastGameResult.score, lastGameResult.tokensEarned);
       refreshPlayerStats();
     }
-  }, [isSuccess, refreshPlayerStats, hash]);
+  }, [isSuccess, refreshPlayerStats, hash, lastGameResult, notifyScoreSubmitted, notifyTransactionConfirmed]);
   
-  // Clear blockchain status after some time
-  useEffect(() => {
-    if (blockchainStatus.status === 'success' || blockchainStatus.status === 'error') {
-      const timer = setTimeout(() => {
-        setBlockchainStatus({ status: 'idle', message: '' });
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [blockchainStatus.status]);
+  // Notifications are auto-cleared by the notification system
 
   if (!isAuthenticated) {
     return (
@@ -321,35 +299,12 @@ export default function GamePage() {
       {/* Navigation Bar */}
       <Navbar onNavigate={handleNavigation} />
       
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4 pt-20">
-      {/* Blockchain Status Notification */}
-      {blockchainStatus.status !== 'idle' && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg border backdrop-blur-sm max-w-sm ${
-          blockchainStatus.status === 'success' 
-            ? 'bg-green-900/80 border-green-500 text-green-100' 
-            : blockchainStatus.status === 'error'
-            ? 'bg-red-900/80 border-red-500 text-red-100'
-            : 'bg-blue-900/80 border-blue-500 text-blue-100'
-        }`}>
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0">
-              {blockchainStatus.status === 'success' && <span className="text-xl">✅</span>}
-              {blockchainStatus.status === 'error' && <span className="text-xl">❌</span>}
-              {blockchainStatus.status === 'submitting' && 
-                <div className="animate-spin w-5 h-5 border-2 border-current border-t-transparent rounded-full"></div>
-              }
-            </div>
-            <div>
-              <h4 className="font-semibold text-sm">
-                {blockchainStatus.status === 'success' && 'Success!'}
-                {blockchainStatus.status === 'error' && 'Error'}
-                {blockchainStatus.status === 'submitting' && 'Blockchain Transaction'}
-              </h4>
-              <p className="text-xs mt-1 opacity-90">{blockchainStatus.message}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4" style={{paddingTop: '100px'}}>
+      {/* Notification System */}
+      <NotificationSystem 
+        notifications={notifications} 
+        onRemove={removeNotification} 
+      />
 
       {/* Header */}
       <header className="game-header">
@@ -397,10 +352,9 @@ export default function GamePage() {
                 <div className="animate-spin w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
                 <h3 className="text-lg font-bold mb-2">📤 Blockchain Submission</h3>
                 <p className="text-sm text-gray-300">
-                  {blockchainStatus.message || 
-                    (isPending && "Confirming transaction...") ||
-                    (isConfirming && "Waiting for blockchain confirmation...") ||
-                    "Preparing transaction..."
+                  {(isPending && "Confirming transaction...") ||
+                   (isConfirming && "Waiting for blockchain confirmation...") ||
+                   "Preparing transaction..."
                   }
                 </p>
               </div>

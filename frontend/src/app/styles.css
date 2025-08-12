@@ -1765,7 +1765,7 @@ body::after {
 /* ===== NOTIFICATION SYSTEM ===== */
 .game-notifications-container {
   position: fixed;
-  top: var(--space-xl);
+  top: calc(80px + var(--space-md)); /* Account for navbar height */
   right: var(--space-xl);
   z-index: var(--z-toast);
   max-width: 400px;

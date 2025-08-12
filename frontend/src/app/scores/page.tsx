@@ -73,30 +73,30 @@ export default function ScoresPage() {
     }
   }, [isAuthenticated, router]);
 
-  const formatLeaderboardData = (data: any[]): LeaderboardEntry[] => {
+  const formatLeaderboardData = (data: unknown[]): LeaderboardEntry[] => {
     if (!data) return [];
     return data.map((entry: any) => ({
-      player: entry.player,
-      score: Number(entry.score),
-      timestamp: Number(entry.timestamp)
+      player: (entry as any).player,
+      score: Number((entry as any).score),
+      timestamp: Number((entry as any).timestamp)
     }));
   };
 
-  const formatPlayerHistory = (data: any[]) => {
+  const formatPlayerHistory = (data: unknown[]) => {
     if (!data) return [];
-    return data.map((entry: any) => ({
-      score: Number(entry.score),
-      level: Number(entry.level),
-      gameTime: Number(entry.gameTime),
-      timestamp: Number(entry.timestamp),
-      player: entry.player,
-      enemiesDestroyed: Number(entry.enemiesDestroyed),
-      rocketsUsed: Number(entry.rocketsUsed),
+    return data.map((entry: unknown) => ({
+      score: Number((entry as any).score),
+      level: Number((entry as any).level),
+      gameTime: Number((entry as any).gameTime),
+      timestamp: Number((entry as any).timestamp),
+      player: (entry as any).player,
+      enemiesDestroyed: Number((entry as any).enemiesDestroyed),
+      rocketsUsed: Number((entry as any).rocketsUsed),
     }));
   };
 
-  const leaderboard = formatLeaderboardData(leaderboardData as any[]);
-  const playerHistory = formatPlayerHistory(playerHistoryData as any[]);
+  const leaderboard = formatLeaderboardData(leaderboardData as unknown[]);
+  const playerHistory = formatPlayerHistory(playerHistoryData as unknown[]);
 
   if (!isAuthenticated) {
     return (
@@ -114,7 +114,7 @@ export default function ScoresPage() {
       {/* Navigation Bar */}
       <Navbar onNavigate={handleNavigation} />
       
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4 pt-20">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4" style={{paddingTop: '100px'}}>
       {/* Header */}
       <header className="game-header">
         <div className="game-header-content">

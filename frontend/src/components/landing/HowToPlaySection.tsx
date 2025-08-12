@@ -240,7 +240,7 @@ const HowToPlaySection = () => {
                 <div>
                   <strong>Watch the Trail</strong>
                   <p>
-                    Follow your rocket's trail to understand trajectory patterns
+                    Follow your rocket&apos;s trail to understand trajectory patterns
                   </p>
                 </div>
               </div>
